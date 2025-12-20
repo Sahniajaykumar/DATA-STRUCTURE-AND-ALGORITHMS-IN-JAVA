@@ -1,0 +1,188 @@
+🔹 What is a Data Structure?
+--> A data structure defines:
+        1. How data is stored in memory
+        2. How data can be accessed and modified
+        3. The performance of operations (time & space complexity)
+
+🔹 Types of Data Structures in Java :
+          
+1️⃣ Primitive Data Structures :  Store single values.
+ int, float, double, char, boolean
+
+2️⃣ Non-Primitive (Reference) Data Structures : 
+
+🔸 A. Linear Data Structures : Data stored sequentially.
+
+1. Array : 
+  Fixed size
+  Same data type
+  int[] arr = {1, 2, 3, 4};
+  Used when: Size is known and fast access is required
+
+2. Linked List
+Dynamic size
+Elements connected using pointers
+
+LinkedList<Integer> list = new LinkedList<>();
+list.add(10);
+list.add(20);
+
+Used when: Frequent insertion/deletion
+
+3. Stack (LIFO)
+Last In First Out
+
+Stack<Integer> stack = new Stack<>();
+stack.push(10);
+stack.pop();
+
+Used when: Undo/Redo, function calls
+
+4. Queue (FIFO)
+
+First In First Out
+
+Queue<Integer> queue = new LinkedList<>();
+queue.add(10);
+queue.poll();
+
+Used when: Task scheduling, buffering
+
+🔸 B. Non-Linear Data Structures
+--------------------------------------
+Data stored hierarchically or graph-like.
+
+1. Tree
+
+Parent-child relationship
+
+// Example: Binary Tree
+class Node {
+    int data;
+    Node left, right;
+}
+
+Used when: Hierarchical data (File system)
+
+2. Graph
+
+Nodes connected by edges
+
+Map<Integer, List<Integer>> graph = new HashMap<>();
+
+
+Used when: Social networks, maps
+
+🔸 C. Hash-Based Data Structures
+----------------------------------------
+Fast access using key-value pairs.
+
+1. HashMap : 
+Map<Integer, String> map = new HashMap<>();
+map.put(1, "Ajay");
+
+O(1) average time complexity
+Allows one null key
+
+2. HashSet : 
+Set<Integer> set = new HashSet<>();
+No duplicates
+Unordered
+
+  🔹 Java Collection Framework (Important for Interviews)
+
+| Interface | Implementations           |
+| --------- | ------------------------- |
+| List      | ArrayList, LinkedList     |
+| Set       | HashSet, TreeSet          |
+| Queue     | PriorityQueue, ArrayDeque |
+| Map       | HashMap, TreeMap          |
+
+
+  🔹 Time Complexity Overview
+
+| Data Structure | Access | Insert | Delete |
+| -------------- | ------ | ------ | ------ |
+| Array          | O(1)   | O(n)   | O(n)   |
+| LinkedList     | O(n)   | O(1)   | O(1)   |
+| Stack          | O(1)   | O(1)   | O(1)   |
+| Queue          | O(1)   | O(1)   | O(1)   |
+| HashMap        | O(1)*  | O(1)*  | O(1)*  |
+
+
+🔹 Why Data Structures Matter (Interview Answer)
+   --> Data structures help in writing efficient, optimized, and scalable applications by reducing time and memory usage.
+  
+
+🧠 PHASE 1: ARRAYS & STRINGS (MOST ASKED)
+
+1️⃣ ARRAY — INTERVIEW CORE
+🔹 Interview Questions :  ✅ 1. Traversal Algorithm , ✅ 2. Insertion (at index k) Algorithm ✅ 3. Deletion Algorithm ✅ 4. Searching(Linear Search , Binary Search (Sorted Array))
+
+✔ Reverse an array
+✔ Find max / min
+✔ Remove duplicates
+✔ Two Sum
+✔ Rotate array
+✔ Find missing number
+
+🧠 PHASE 2: LINKED LIST (FAVORITE FOR LOGIC)
+2️⃣ LINKED LIST QUESTIONS : ✅ 1. Insertion at Beginning , ✅ 2. Insertion at End, ✅ 3. Deletion, ✅ 4. Traversal
+
+✔ Reverse linked list
+✔ Detect cycle
+✔ Find middle
+✔ Merge two sorted lists
+
+
+🧠 PHASE 3: STACK & QUEUE
+3️⃣ STACK QUESTIONS : 1 ✅ PUSH . 2 ✅ POP
+  
+✔ Valid parentheses
+✔ Reverse string
+✔ Next greater element
+
+4️⃣ QUEUE QUESTIONS
+✅ ENQUEUE , ✅ DEQUEUE
+  
+✔ Implement stack using queue
+✔ Sliding window maximum
+
+🧠 PHASE 4: HASHING (VERY IMPORTANT)
+5️⃣ HASHMAP / HASHSET
+
+✔ Frequency count , Insert , Search
+✔ First non-repeating element
+✔ Detect duplicates
+
+🧠 PHASE 5: TREES & BST (ADVANCED ROUND)
+6️⃣ BINARY TREE
+✅ Inorder (LNR) , ✅ Preorder (NLR) , ✅ Postorder (LRN)
+  
+✔ Traversals
+✔ Height
+✔ Diameter
+
+7️⃣ BST SEARCH
+  
+  🔹 Property
+       Left < Root < Right
+🔹 BST Search Algorithm
+
+🧠 PHASE 6: SORTING & SEARCHING
+8️⃣ QUICK SORT (INTERVIEW FAVORITE) , 🔹 Bubble Sort , 🔹 Selection Sort , 🔹 Insertion Sort
+
+🧠 PHASE 7: GRAPHS (PRODUCT COMPANIES)
+9️⃣ GRAPH (BFS & DFS)
+🔹 BFS Algorithm , 🔹 DFS Algorithm
+
+🧪 HOW TO ANSWER IN INTERVIEW (IMPORTANT)
+Always follow:
+
+Brute force approach
+
+Optimized approach
+
+Complexity analysis
+
+Edge cases
