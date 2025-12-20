@@ -1,65 +1,169 @@
-🧠 PHASE 1: ARRAYS & STRINGS (MOST ASKED)
+Count the number of digits in a Number 
+--------------------------------------
 
-1️⃣ ARRAY — INTERVIEW CORE
-🔹 Interview Questions
+Q: How to count the number of  digits in a Number? 
 
-✔ Reverse an array
-✔ Find max / min
-✔ Remove duplicates
-✔ Two Sum
-✔ Rotate array
-✔ Find missing number
+Algorithms : 
+     1. checks if digits exist.
+     2. Remove the last digit(devided by 10)
+     3. Increase value of count by 1(one)
+     4. Repeate step 1 to step 3 till digit remains
 
-🧠 PHASE 2: LINKED LIST (FAVORITE FOR LOGIC)
-2️⃣ LINKED LIST QUESTIONS
+Example : 
+package com.practice;
+import java.util.Scanner;
 
-✔ Reverse linked list
-✔ Detect cycle
-✔ Find middle
-✔ Merge two sorted lists
+public class CountDigits {
+    public static int countDigits(int n) {
 
+        int count = 0;
 
-🧠 PHASE 3: STACK & QUEUE
-3️⃣ STACK QUESTIONS
+        // Handle case when number is 0
+        if (n == 0) {
+            return 1;
+        }
+        // Convert negative number to positive manually
+        if (n < 0) {
+            n = -n;
+        }
 
-✔ Valid parentheses
-✔ Reverse string
-✔ Next greater element
+        // Count digits
+        while (n > 0) {
+            n = n / 10;   // remove last digit
+            count++;      // increase count
+        }
 
-4️⃣ QUEUE QUESTIONS
+        return count;
+    }
 
-✔ Implement stack using queue
-✔ Sliding window maximum
+    public static void main(String[] args) {
 
-🧠 PHASE 4: HASHING (VERY IMPORTANT)
-5️⃣ HASHMAP / HASHSET
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter the number: ");
+        int n = scan.nextInt();
 
-✔ Frequency count
-✔ First non-repeating element
-✔ Detect duplicates
+        int result = countDigits(n);
+        System.out.println("Number of digits: " + result);
+    }
+}
 
-🧠 PHASE 5: TREES & BST (ADVANCED ROUND)
-6️⃣ BINARY TREE
+-------------------
+Factorial
+--------------------
+Q: Write a Java program to find the factorial of a given number without using any inbuilt functions.
 
-✔ Traversals
-✔ Height
-✔ Diameter
+Example : Iterative approach 
 
-7️⃣ BST SEARCH
+package com.practice;
 
-🧠 PHASE 6: SORTING & SEARCHING
-8️⃣ QUICK SORT (INTERVIEW FAVORITE)
+import java.util.Scanner;
 
-🧠 PHASE 7: GRAPHS (PRODUCT COMPANIES)
-9️⃣ BFS
+public class Factorial {
 
-🧪 HOW TO ANSWER IN INTERVIEW (IMPORTANT)
-Always follow:
+    public static long factorial(int n) {
 
-Brute force approach
+        if (n < 0) {
+            return -1; // factorial not defined
+        }
 
-Optimized approach
+        long res = 1;
 
-Complexity analysis
+        for (int i = 1; i <= n; i++) {
+            res = res * i;
+        }
 
-Edge cases
+        return res;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter the number for factorial: ");
+        int n = scan.nextInt();
+
+        long result = factorial(n);
+
+        if (result == -1) {
+            System.out.println("Factorial is not defined for negative numbers.");
+        } else {
+            System.out.println("Factorial of " + n + " is: " + result);
+        }
+    }
+}
+
+Note :
+Q1️⃣ What is factorial?
+
+👉 Factorial of a number n is the product of all positive integers from 1 to n.
+
+Q2️⃣ What is the factorial of 0?
+
+👉 0! = 1
+
+Q3️⃣ Why do we start result as 1?
+
+👉 Because factorial involves multiplication, and 1 is the identity for multiplication.
+
+Q4️⃣ Can factorial be calculated for negative numbers?
+
+👉 No, factorial is not defined for negative numbers.
+
+Q5️⃣ Why did you use long instead of int?
+
+👉 Because factorial values grow very fast and int overflows after 12!.
+
+Q6️⃣ What is the difference between iterative and recursive factorial?
+
+👉 Iterative uses loops, recursion uses function calls. Iterative is more memory-efficient.
+
+-----------------------
+Trailing zeros : 
+------------------
+Q: 👉 “Write a Java program to find the number of trailing zeroes in the factorial of a given number using an efficient algorithm.”
+
+Example : 
+
+package com.practice;
+
+import java.util.Scanner;
+
+public class TrailingZeros {
+
+    static int trailingZeros(int n) {
+
+        if (n < 0) {
+            return -1; // not defined
+        }
+
+        int res = 0;
+        int powerOf5 = 5;
+
+        while (n >= powerOf5) {
+            res = res + (n / powerOf5);
+            powerOf5 = powerOf5 * 5;
+        }
+
+        return res;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter the number: ");
+        int n = scan.nextInt();
+
+        int result = trailingZeros(n);
+
+        if (result == -1) {
+            System.out.println("Trailing zeroes not defined for negative numbers.");
+        } else {
+            System.out.println("Trailing zeroes in " + n + "! = " + result);
+        }
+    }
+}
+
+Note : “Trailing zeroes in factorial depend on the number of factors of 5, so I sum n divided by powers of 5.”
+
+Q: Why not count 2s?
+A: Because factors of 2 are always more than factors of 5 in factorials.
