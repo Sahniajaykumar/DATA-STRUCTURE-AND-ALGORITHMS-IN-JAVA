@@ -167,3 +167,230 @@ Note : “Trailing zeroes in factorial depend on the number of factors of 5, so 
 
 Q: Why not count 2s?
 A: Because factors of 2 are always more than factors of 5 in factorials.
+
+===========================================GCD/HCF==========================================================================
+Three way solve : 
+1. Bruteforce Algorithm :
+------------------------
+a. Find the minimum of both A & B 
+b. Use for loop and start from  `i = m` and go till one 
+c. Inside the loop , check if  `i` is a common divisor .
+d. If `i` is a common divisor , return `i` .
+
+Example : 
+package com.practice;
+import java.util.Scanner;
+public class BruteForceGCD {
+    public static int bruteForceGCD(int a, int b) {
+
+        // Handle zero cases
+        if (a == 0) return b;
+        if (b == 0) return a;
+
+        // Convert negative numbers to positive (without inbuilt functions)
+        if (a < 0) {
+            a = -a;
+        }
+        if (b < 0) {
+            b = -b;
+        }
+
+        // Find minimum manually
+        int min;
+        if (a < b) {
+            min = a;
+        } else {
+            min = b;
+        }
+
+        // Brute-force GCD logic
+        for (int i = min; i >= 1; i--) {
+            if (a % i == 0 && b % i == 0) {
+                return i;
+            }
+        }
+        return 1;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter the first number:");
+        int a = scan.nextInt();
+
+        System.out.println("Enter the second number:");
+        int b = scan.nextInt();
+
+        int result = bruteForceGCD(a, b);
+        System.out.println("GCD is: " + result);
+        scan.close();
+    }
+}
+
+2. Euclid's Algorithm : Efficient approach than brutforce algorithm
+a. Find the larger number 
+b. Replace the larger number by the difference between the larger and smaller number 
+c. Repeat step `a` and `b` until both number become equal .
+
+Example : 
+package com.practice;
+import java.util.Scanner;
+
+public class EuclidAlgorithmGCD {
+    public static int euclidAlgorithmGcd(int a, int b) {
+
+        // Handle zero cases
+        if (a == 0) return b;
+        if (b == 0) return a;
+
+        // Convert negatives to positive (no inbuilt functions)
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+
+        // Euclidean Algorithm using subtraction
+        while (a != b) {
+            if (a > b) {
+                a = a - b;
+            } else {
+                b = b - a;
+            }
+        }
+        return a; // or b (both are same)
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter the first number:");
+        int a = scan.nextInt();
+
+        System.out.println("Enter the second number:");
+        int b = scan.nextInt();
+
+        int res = euclidAlgorithmGcd(a, b);
+        System.out.println("GCD is: " + res);
+        scan.close();
+    }
+}
+
+3. Most Optimised Euclid's Algorithm : given by GABRIEL LAME .
+
+📌 Algorithm: GCD Using Euclidean Algorithm (Modulo Method) , // logrithimc time complexity
+Step 1: Read two integers a and b.
+Step 2: If a is equal to 0, return b as the GCD.
+Step 3: If b is equal to 0, return a as the GCD.
+Step 4: If a is negative, convert it to positive.
+Step 5: If b is negative, convert it to positive.
+Step 6: Repeat the following steps while both a and b are not equal to 0:
+  --> If a is greater than b, replace a with a % b.
+  --> Otherwise, replace b with b % a.
+Step 7: When the loop ends, one of the numbers becomes 0.
+Step 8: If a is not equal to 0, return a as the GCD; otherwise, return b.
+
+package com.practice;
+import java.util.Scanner;
+
+public class EuclidAlgorithmGCD {
+
+    public static int euclidAlgorithmGcd(int a, int b) {
+
+        // Handle zero cases
+        if (a == 0) return b;
+        if (b == 0) return a;
+
+        // Convert negatives to positive (no inbuilt functions)
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+
+        // Euclidean Algorithm using modulo(%)                                Most Efficient approach 
+        while (a != 0 && b !=0) {
+            if (a > b) {
+                a = a % b;
+            } else {
+                b = b % a;
+            }
+        }
+        if(a !=0){
+            return a;
+        }else{
+            return b;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter the first number:");
+        int a = scan.nextInt();
+
+        System.out.println("Enter the second number:");
+        int b = scan.nextInt();
+
+        int res = euclidAlgorithmGcd(a, b);
+        System.out.println("GCD is: " + res);
+        scan.close();
+    }
+}
+--------------------------------------------------------------------------------------------------------------------
+📌 What is LCM?
+--> LCM (Least Common Multiple) of two numbers is the smallest positive number that is divisible by both numbers.
+
+🔹 Key Interview Formula (VERY IMPORTANT)
+   -------------------------------
+  |  LCM(a*b) = |a*b| / GCD(a,b) |
+  --------------------------------
+--> 👉 This is the most efficient and expected approach in interviews.
+
+🧠 Step-by-Step Algorithm (Using GCD) : 
+
+Step 1: Read two integers a and b.
+Step 2: If either a or b is 0, return 0 as LCM.
+Step 3: Convert negative numbers to positive.
+Step 4: Find GCD(a, b) using Euclidean Algorithm.
+Step 5: Compute
+LCM = (a * b) / GCD
+Step 6: Return the LCM.
+
+Example : 
+package com.practice;
+import java.util.Scanner;
+
+public class LCMUsingGCD {
+
+    // GCD using Euclidean Algorithm
+    public static int gcd(int a, int b) {
+
+        if (a == 0) return b;
+        if (b == 0) return a;
+
+        if (a < 0) a = -a;
+        if (b < 0) b = -b;
+
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    // LCM method
+    public static int lcm(int a, int b) {
+        if (a == 0 || b == 0) {
+            return 0;
+        }
+        int gcdValue = gcd(a, b);
+        return (a * b) / gcdValue;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter first number:");
+        int a = scan.nextInt();
+
+        System.out.println("Enter second number:");
+        int b = scan.nextInt();
+
+        int result = lcm(a, b);
+        System.out.println("LCM is: " + result);
+        scan.close();
+    }
+}
+
