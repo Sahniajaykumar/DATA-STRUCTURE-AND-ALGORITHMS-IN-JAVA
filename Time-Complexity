@@ -1,0 +1,224 @@
+⏱️ Time Complexity — Interview-Depth Explanation
+--------------------------------------------------
+1️⃣ What is Time Complexity?
+--> Time Complexity measures how the execution time of an algorithm grows as input size increases.
+📌 Key point for interview : Time Complexity is not actual time (seconds), it is the rate of growth of operations.
+
+📌 What is Frequency Count?
+--> 👉 Count how many times each statement executes as a function of input size n.
+--> Then: Convert that count into Big-O Time Complexity
+
+🟢 Example 1: Single Loop (VERY BASIC)
+int sum = 0;              // (1)
+for(int i = 0; i < n; i++) {   // (2)
+    sum = sum + i;        // (3)
+}
+Step 1️⃣ Count Each Statement
+| Statement       | Frequency |
+| --------------- | --------- |
+| `sum = 0`       | 1         |
+| `i = 0`         | 1         |
+| `i < n`         | n + 1     |
+| `i++`           | n         |
+| `sum = sum + i` | n         |
+
+Step 2️⃣ Total Frequency
+T(n) = 1 + 1 + (n + 1) + n + n
+T(n) = 3n + 3
+
+Step 3️⃣ Convert to Big-O
+--> Ignore constants
+--> Keep highest order term
+✅ Final Time Complexity = O(n)
+
+🟢 Example 2: Nested Loop (IMPORTANT)   OUTER LOOP  INNER LOOP
+for(int i = 0; i < n; i++) {             n+1          --------    
+    for(int j = 0; j < n; j++) {         n      *      (n+1)
+        System.out.println("*");         n      *        n
+    }
+    System.out.println();             n             --------
+}
+Time Complexity : n+1 + n*(n+1) + n*n + n = 2n+1+n²+n+n² = 3n+1+2n² = n+n²= ➡️ Time Complexity = O(n²) ✅
+
+🟢 Example 3: triangular nested loop (n=5)                   i     |           j        |    No. of times j executed
+for(int i = 0; i < n; i++) {             n+1                  0     |  0            +1   |     1      + 1 (termination condition)
+    for(int j = 0; j <=i; j++) {         n(n + 1) / 2 +n      1     |  0,1          +1   |     2      + 1
+        System.out.println("*");         n(n + 1) / 2         2     |  0,1,2        +1   |     3      + 1
+    }                                                         3     |  0,1,2,3      +1   |     4      + 1
+    System.out.println();                n                    4     |  0,1,2,3,4    +1   |     5      + 1
+} 
+
+Proper frequency counts:
+| Component            | Frequency                                                  |
+| -------------------- | -----------------------------------------------------------|
+| Outer loop condition | n + 1                                                      |
+| Inner loop condition | n(n + 1) / 2 + n since (1+2+3+4+5) + 5 = n(n + 1) / 2 + n  |
+| Inner println        | n(n + 1) / 2     since 1+2+3....+n = n(n+1)/2              |
+| Outer println        | n                                                          |
+
+Time Complexity T(n) = (n + 1) + ((n² + n)/2 + n) + (n² + n)/2 + n 
+                T(n) = (n + 1) + (n²/2 + n/2 + n) + (n²/2 + n/2) + n
+                T(n) = (n²/2 + n²/2) + (n/2 + n/2 + n + n + n) + 1 = n² + 4n + 1
+                T(n) = O(n²)
+
+Step 1️⃣ Simplify each group
+First group : n²/2 + n²/2 = n²
+Second group : n/2 + n/2 = n
+So : n/2 + n/2 + n + n + n
+= n + n + n + n
+= 4n
+Constant term : + 1
+Step 2️⃣ Final Simplified Form
+T(n) = n² + 4n + 1
+
+2️⃣ Why Interviewers Care?
+--> Interviewers use time complexity to check:
+--> Can you analyze performance
+--> Can you choose optimal algorithms
+--> Can you scale applications (very important for backend roles like yours)
+
+3️⃣ How Time Complexity is Represented?
+--> Using Big-O Notation
+| Notation   | Meaning      |
+| ---------- | ------------ |
+| O(1)       | Constant     |
+| O(log n)   | Logarithmic  |
+| O(n)       | Linear       |
+| O(n log n) | Linearithmic |
+| O(n²)      | Quadratic    |
+| O(2ⁿ)      | Exponential  |
+
+📌 Interview line: Big-O describes the upper bound (worst-case) time complexity.
+
+4️⃣ Types of Time Complexity
+1. Best Case
+2. Average Case
+3. Worst Case (MOST IMPORTANT)
+
+📌 Interviewers usually ask for worst-case
+
+Example:
+// Searching in array
+for(int i=0;i<n;i++){
+    if(arr[i]==x) return i;
+}
+| Case    | Time |
+| ------- | ---- |
+| Best    | O(1) |
+| Average | O(n) |
+| Worst   | O(n) |
+
+5️⃣ Common Time Complexities with Examples
+
+🟢 O(1) — Constant Time
+--> Execution time does not depend on input size.
+
+int x = arr[5]; // INPUT=5
+📌 Examples:
+Access array element
+HashMap get()
+
+Interview Tip:Even if input size is 1 million → still O(1)
+
+🟢 O(log n) — Logarithmic Time
+--> Input reduces by half each step.
+
+// Binary Search
+while(low <= high){
+    int mid = (low + high) / 2;
+    if(arr[mid] == key) return mid;
+    else if(key < arr[mid]) high = mid - 1;
+    else low = mid + 1;
+}
+📌 Rule: If you divide input by 2 → O(log n)
+
+ Tricky Interview Questions FOR Logarithmic Time : 
+❓ What is time complexity of this?
+
+for(int i=1;i<n;i=i*2){
+    System.out.println(i);
+}
+✔️ Answer: O(log n)
+
+❓ What about this?
+for(int i=0;i<n;i++){
+    for(int j=1;j<n;j=j*2){
+        System.out.println(i+j);
+    }
+}
+✔️ O(n log n)
+
+🟢 O(n) — Linear Time
+--> Loop runs n times.
+
+for(int i=0;i<n;i++){
+    System.out.println(arr[i]);
+}
+
+📌 Examples:
+--> Traversing array
+--> Searching unsorted array
+
+🟢 O(n log n) — Linearithmic
+--> Combination of divide + process n elements
+// Merge Sort
+O(n log n)
+
+📌 Examples:
+--> Merge Sort
+--> Quick Sort (average)
+
+🟢 O(n²) — Quadratic
+--> Nested loops.
+for(int i=0;i<n;i++){
+    for(int j=0;j<n;j++){
+        System.out.println(i + j);
+    }
+}
+📌 Examples:
+--> Bubble Sort
+--> Selection Sort
+⚠️ Interview warning: Avoid O(n²) for large input
+
+🟢 O(2ⁿ) — Exponential (VERY BAD)
+--> Each input creates two recursive calls.
+int fib(int n){
+    if(n<=1) return n;
+    return fib(n-1) + fib(n-2);
+}
+📌 Used in:
+--> Brute force recursion
+--> Backtracking
+
+6️⃣ How to Calculate Time Complexity (STEP-BY-STEP) : 
+-----------------------------------------------------
+✅ Rule 1: Ignore constants
+--> O(3n + 5) → O(n)
+
+✅ Rule 2: Nested loops → Multiply
+for(i=0;i<n;i++)
+  for(j=0;j<n;j++)
+
+→ O(n²)
+
+✅ Rule 3: Sequential loops → Add
+for(i=0;i<n;i++) → O(n)
+for(j=0;j<n;j++) → O(n)
+
+Total → O(2n) → O(n)
+
+✅ Rule 4: Drop lower order terms
+--> O(n² + n + 1) → O(n²)
+
+
+
+
+
+
+
+
+
+
+
+
+
