@@ -71,6 +71,72 @@ Constant term : + 1
 Step 2️⃣ Final Simplified Form
 T(n) = n² + 4n + 1
 
+🟢 Example 4:Non-Linear Loop — O(√n)       i    |    p            Termination condition : p > n                     
+                                     -----------------------                              k(k+1)/2 > n
+for(int i=0; p<=n; i++){                   0     |     0                                  k²+k/2 > n    Ignore constants 
+  p = p + i;                               1     |    0+1                                 k²+k > n      Ignore lower terms
+}                                          2     |   0+1+2                                k² > n        Take square root
+ 1️⃣ Understand the loop structure         3     |   0+1+2+3                              √(k²) > √n
+ The loop termination depends on p.        .     |      .                                 k > √n
+ p increases by i in each iteration.       .     |      .                                 Time Complexity = O(√n) efficient time complexity
+ p grows as the sum of natural numbers.    .     |      .
+ Therefore, the loop runs √n times.        K     |   0+1+2+3+....+k (sum of natural number)     
+
+Time complexity order (ascending → descending) : O(√n) < O(n) < O(n²) < O(n³)
+
+🟢 Example 4:                            
+for (int i = 1; i < n; i = i * 2) {  |   Iteration             i value                              |  Termination condition : 2ᵏ >= n 
+    // statements                    |--------------------------------------------------------------|                        2ᵏ = n              Skip termination iteration
+}                                    |   1                      1 * 2                           = 2 |                        log(2ᵏ)   = log n   Take log on both sides:
+                                     |   2                      1 * 2 * 2                       = 2²|                        log₂(2ᵏ)  = log₂ n  Change of base:since base is 2
+                                     |   3                      1 * 2 * 2 * 2                   = 2³|                        k log₂(2) = log₂ n   Since log₂(2) = 1:
+                                     |   4                      1 * 2 * 2 * 2 * 2               = 2⁴|                            k     = log₂ n
+                                     |   ......                           ......                    |
+                                     |    k                     1 × 2 × 2 × ... × 2   (k times) = 2ᵏ|         Time complexity : T(k) = O(log n)    (Base of log is ignored in Big-O)
+
+🧠 Interview Tip
+Whenever you see: i = i * 2 or i = i / 2
+👉 Immediately think: O(log n)
+
+🟢 Example 4:
+for (int i = n; i >= 1; i = i / 2) {
+    // statements
+}
+1️⃣ Understand the loop structure
+| Part           | Explanation                                  |
+| -------------- | -------------------------------------------- |
+| Initialization | `i = n` ✅                                   |
+| Condition      | `i >= 1` ❗ (loop runs while i is at least 1) |
+| Update         | `i = i / 2` ❗ (i halves each iteration)      |
+
+2️⃣ Trace the values of i
+| Iteration | i value                         |
+| --------- | ------------------------------- |
+| 1         | n                               |
+| 2         | n / 2                           |
+| 3         | n / 2²                          |
+| 4         | n / 2³                          |
+| ...       | ...                             |
+| k         | n / 2^k  (or the smallest integer ≥ 1) |
+
+3️⃣ Termination condition
+Loop stops when: i < 1
+After k iterations: n / 2ᵏ < 1
+
+4️⃣ Solve for k
+Multiply both sides by 2ᵏ: n < 2ᵏ
+Take log base 2: log₂(n) < log₂(2ᵏ)
+Apply log rule: log₂(n) < k · log₂(2)
+Since log₂(2) = 1:
+k > log₂(n)
+
+5️⃣ Number of iterations
+k ≈ log₂(n)
+
+6️⃣ Time Complexity
+T(n) = O(log n)
+
+
 2️⃣ Why Interviewers Care?
 --> Interviewers use time complexity to check:
 --> Can you analyze performance
