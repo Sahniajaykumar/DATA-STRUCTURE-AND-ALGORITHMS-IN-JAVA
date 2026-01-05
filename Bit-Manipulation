@@ -25,19 +25,8 @@
 
 Example: int n = 5; // binary: 0101
 
-3️⃣ Bitwise Operators in Java
-------------------------------
-| Operator             | Symbol | Meaning                 |                   |
-| -------------------- | ------ | ----------------------- | ----------------- |
-| AND                  | `&`    | 1 if both bits are 1    |                   |
-| OR                   | `      | `                       | 1 if any bit is 1 |
-| XOR                  | `^`    | 1 if bits are different |                   |
-| NOT                  | `~`    | Inverts bits            |                   |
-| Left Shift           | `<<`   | Multiply by 2           |                   |
-| Right Shift          | `>>`   | Divide by 2             |                   |
-| Unsigned Right Shift | `>>>`  | Fill with 0             |                   |
 
-4️⃣ Java Inbuilt Bit Utilities
+3️⃣ Java Inbuilt Bit Utilities
 ---------------------------------
 1. Integer.toBinaryString(n);
 --> Converts an integer (decimal) into its binary string representation.
@@ -205,4 +194,232 @@ Then:
 Part 3: Add them
 decimal = decimal * 2 + digit;
 👉 This adds the current binary digit to decimal value.
+
+Q: How are Negative Numbers Stored in Binary?
+=============================================
+--> Computers store negative numbers using Two’s Complement representation.
+
+Step-by-Step: Two’s Complement Method
+--------------------------------------
+Rule : To store −N in binary:
+1️⃣ Write binary of +N
+2️⃣ Take 1’s complement (invert bits)
+3️⃣ Add 1
+
+Example 1: Store −5 in 8-bit Binary
+Step 1: Binary of +5
+5  = 00000101
+
+Step 2: 1’s Complement (invert bits)
+00000101
+--------
+11111010
+
+Step 3: Add 1
+11111010
++       1
+---------
+11111011
+--> ✅ −5 = 11111011 (in 8-bit two’s complement)
+
+Q: How to Identify a Negative Number?
+--> 👉 MSB (Most Significant Bit)
+| MSB | Meaning         |
+| --- | --------------- |
+| 0   | Positive number |
+| 1   | Negative number |
+Ex: 
+1. Positive Number (+5) : 
+00000101
+↑
+MSB = 0 → Positive
+
+2. Negative Number (−5)
+11111011
+↑
+MSB = 1 → Negative
+
+Q: How to Convert Back (Binary → Decimal)?
+If MSB = 1 (negative):
+    1️⃣ Take 1’s complement
+    2️⃣ Add 1
+    3️⃣ Put negative sign
+Example:
+11111011
+↓ invert
+00000100
+↓ +1
+00000101 = 5
+
+Q. Range of Values (Very Important)
+--> For n bits:
+--> Range = -2^(n-1)  to  +2^(n-1) - 1
+--> Example: 8-bit
+--> -128  to  +127
+
+🔹 Bitwise Operators in Java 
+====================================
+| Operator             | Symbol | Meaning                 |                   |
+| -------------------- | ------ | ----------------------- | ----------------- |
+| AND                  | `&`    | 1 if both bits are 1    |                   |
+| OR                   | `      | `                       | 1 if any bit is 1 |
+| XOR                  | `^`    | 1 if bits are different |                   |
+| NOT                  | `~`    | Inverts bits            |                   |
+| Left Shift           | `<<`   | Multiply by 2           |                   |
+| Right Shift          | `>>`   | Divide by 2             |                   |
+| Unsigned Right Shift | `>>>`  | Fill with 0             |                   |
+
+1️⃣ Bitwise AND (&) : Both bits must be 1
+✅ Truth Table
+| A | B | A & B |
+| - | - | ----- |
+| 0 | 0 | 0     |
+| 0 | 1 | 0     |
+| 1 | 0 | 0     |
+| 1 | 1 | 1     |
+Ex: 
+int a = 5;   // 0101
+int b = 3;   // 0011
+System.out.println(a & b); // 1
+
+🧠 Logic: 
+  0101
+& 0011
+------
+  0001  → 1
+--> Used in: 1.Security  2.Role-based access  3.Feature toggles
+
+2️⃣ Bitwise OR (|) : Any bit is 1 → result 1
+✅ Truth Table
+| A | B | A | B |
+| - | - | ----- |
+| 0 | 0 | 0     |
+| 0 | 1 | 1     |
+| 1 | 0 | 1     |
+| 1 | 1 | 1     |
+Ex: 
+int a = 5; // 0101
+int b = 3; // 0011
+System.out.println(a | b); // 7
+
+🧠 Logic:
+  0101
+| 0011
+------
+  0111 → 7
+
+🔥 Real-Time Use : ✔ Enable Features
+int DARK_MODE = 1;
+int NOTIFICATIONS = 2;
+int settings = DARK_MODE | NOTIFICATIONS;
+
+--> Used in: 1.Configuration flags   2.Logging levels   3.System properties
+
+3️⃣ Bitwise XOR (^) : Different bits → 1 (Both Same → 0 , Both Different → 1)
+✅ Truth Table
+| A | B | A ^ B |
+| - | - | ----- |
+| 0 | 0 | 0     |
+| 0 | 1 | 1     |
+| 1 | 0 | 1     |
+| 1 | 1 | 0     |
+Ex: 
+int a = 5; // 0101
+int b = 3; // 0011
+System.out.println(a ^ b); // 6
+
+🧠 Logic:
+  0101
+^ 0011
+------
+  0110 → 6
+
+🔥 Real-Time Use : 
+1. ✔ Swap Two Numbers (No Temp Variable)
+int a = 10, b = 20;
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+2. ✔ Find Unique Element : Very common in DSA interviews
+int[] arr = {2, 3, 2, 4, 4};
+int res = 0;
+
+for (int x : arr)
+    res ^= x;
+System.out.println(res); // 3
+
+4️⃣ Bitwise NOT (~)
+✅ Truth Table
+| A | ~A |
+| - | -- |
+| 0 | 1  |
+| 1 | 0  |
+Ex: 
+int a = 5;
+System.out.println(~a);
+
+ 5  = 00000000 00000000 00000000 00000101
+~5 = 11111111 11111111 11111111 11111010 → -6
+
+🧠 Logic : ~n = -(n + 1)  // formula to calculate directly
+
+Real-Time Use : 1.Bit masking  2.Clearing flags  3.Low-level operations
+Ex : int mask = ~READ;
+
+5️⃣ Left Shift (<<) : 
+Ex : 
+int a = 5;
+System.out.println(a << 1); // 10
+
+5 = 00000101
+<<1
+---------
+10 = 00001010
+
+🧠 Logic : a << n = a × 2ⁿ
+
+🔥 Real-Time Use : 1.Fast multiplication  2.Hashing  3.Bitmap indexing
+Ex: int size = 1 << 10; // 1024
+
+6️⃣ Right Shift (>>) (Signed) : 1.Preserves sign bit  2.Fills with MSB
+Ex: 
+int a = -8;
+System.out.println(a >> 1); // -4
+
+-8 = 11111000
+>>1
+-----
+-4 = 11111100
+
+🔥 Real-Time Use : 1.Division by 2   2.Arithmetic operations
+Ex: int mid = (low + high) >> 1;
+--> Used in Binary Search
+
+7️⃣ Unsigned Right Shift (>>>) : 1.Always fills with 0   2.Ignores sign
+Ex: 
+int a = -8;
+System.out.println(a >>> 1);
+
+11111000 >>> 1
+= 01111100 → large positive number
+
+🔥 Real-Time Use : 1.Hash functions  2.Binary data parsing  3.Cryptography
+Ex: int hash = value >>> 16;
+
+Interview Summary (Must Remember) : 
+| Operator | Key Point       |           |
+| -------- | --------------- | --------- |
+| `&`      | Check flags     |           |
+| `        | `               | Set flags |
+| `^`      | Toggle / unique |           |
+| `~`      | Invert bits     |           |
+| `<<`     | Fast multiply   |           |
+| `>>`     | Signed divide   |           |
+| `>>>`    | Unsigned shift  |           |
+
+
+
+
+
 
