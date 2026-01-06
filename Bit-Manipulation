@@ -1,5 +1,26 @@
 🔢 Bit Manipulation in Java (In-Depth Guide)
 ================================================
+Q: Bit : Bits are values in the form of 0 and 1 (binary form).
+
+🔹 Bits in Java (Interview Point)
+| Data Type | Size (Bytes)  | Size (Bits)   | Range (Numeric Form)                                        |
+| --------- | ------------- | ------------- | ----------------------------------------------------------- |
+| `byte`    | 1 byte        | 8 bits        |   −128 to 127                                               |
+| `short`   | 2 bytes       | 16 bits       |   −32,768 to 32,767                                         |
+| `int`     | 4 bytes       | 32 bits       |   −2,147,483,648 to 2,147,483,647                           |
+| `long`    | 8 bytes       | 64 bits       |   −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807   |
+| `char`    | 2 bytes       | 16 bits       |   0 to 65,535                                               |
+| `boolean` | JVM dependent | JVM dependent |   true / false                                              |
+| `float`   | 4 bytes       | 32 bits       |   ~1.4E−45 to 3.4028235E38                                  |
+| `double`  | 8 bytes       | 64 bits       |   ~4.9E−324 to 1.7976931348623157E308                       |
+
+
+🔹 Bit vs Byte (Very Important) 
+| Bit           | Byte              |
+| ------------- | ----------------- |
+| Single 0 or 1 | Group of 8 bits   |
+| Smallest unit | Basic memory unit |
+
 1️⃣ What is Bit Manipulation?
 ------------------------------------
 --> Bit manipulation means working directly with binary bits (0s and 1s) of numbers using bitwise operators.
@@ -24,7 +45,6 @@
 | 5       | 0101   |
 
 Example: int n = 5; // binary: 0101
-
 
 3️⃣ Java Inbuilt Bit Utilities
 ---------------------------------
@@ -419,7 +439,274 @@ Interview Summary (Must Remember) :
 | `>>>`    | Unsigned shift  |           |
 
 
+Q: 🔹 What is Bit Masking?
+=============================
+--> Bit masking is a technique that uses bitwise operators to manipulate individual bits of an integer 
+    for efficient storage, fast computation, and flag management.
 
+--> It is commonly used in:
+     1.Permissions
+     2.Feature flags
+     3.Performance-critical systems
+     4.Low-level optimizations
 
+🔹 Why Do We Use Bit Masking?
+--> Interview points:
+    1.Saves memory (1 bit per state)
+    2.Very fast (bitwise ops are O(1))
+    3.Multiple states stored in one integer
+    4.Cleaner than multiple booleans
+
+🔹 Interview Master Summary (Cheat Sheet)
+| Task             | Formula       |         |
+| ---------------- | ------------- | ------- |
+| Check bit        | `n & (1<<i)`  |         |
+| Set bit          | `n            | (1<<i)` |
+| Clear bit        | `n & ~(1<<i)` |         |
+| Toggle bit       | `n ^ (1<<i)`  |         |
+| Odd/Even         | `n & 1`       |         |
+| Power of 2       | `n&(n-1)`     |         |
+| Clear lowest bit | `n&(n-1)`     |         |
+| Rightmost bit    | `n & -n`      |         |
+
+✅ Basic Rules : Bits behave like electric switches.
+Rule 1 : 0 → OFF
+Rule 2 : 1 → ON
+
+Rule 1 : 0 → OFF
+     |0|0|1|0|0|1|0|0|
+OR(|)|0|0|0|0|0|0|0|0|
+     ------------------
+     |0|0|1|0|0|1|0|0|
+Observation: zero(0) has not effect on bits
+
+Rule 2 : 1 → ON
+     |0|0|1|0|0|1|0|0|
+OR(|)|1|1|1|1|1|1|1|1|
+     ------------------
+     |1|1|1|1|1|1|1|1|
+Observation: All off bits are turned on if we perform OR(|) operation with 1
+
+Q 1: How to Switch ON the iᵗʰ Bit (Bit Masking) ?
+--> 👉 To switch ON a bit, we use Bitwise OR ( | )
+--> Formula (Must Remember) : n = n | (1 << i);
+
+🧠 How This Works (Logic)
+--> (1 << i) creates a mask
+--> That mask has only the iᵗʰ bit ON
+--> OR (|) with 1 → bit becomes ON
+--> Other bits remain unchanged
+
+Example : Switch ON the 3rd bit of: n = |0|0|1|0|0|1|0|0|
+
+Step 1: Create mask
+mask = 1 << 3; shifting 1 at 3rd index position from right to the left , which turn ON the bit at index 3.
+  index :   7 6 5 4 3 2 1 0   --> Java uses 0-based indexing for counting from the right (LSB)  . 
+1 << 3  →  |0|0|0|0|1|0|0|0|  --> Only the 3ʳᵈ bit is ON
+Note: 
+--> Although bits are written from left to right, bit indexing in Java is always counted from the rightmost (LSB), starting at 0.
+
+Step 2: OR operation with two rule first check which bit should change and which bit unchange.                             
+      |0|0|1|0|0|1|0|0|
+OR(|) |0|0|0|0|1|0|0|0| --> mask: (1 << i) and 3rd index left shift <i<<3) 0 0 0      
+ ------------------------------------------------------------------
+      |0|0|1|0|1|1|0|0|
+Observation : Only the 3rd bit is switched ON, all other bits remain same
+
+Ex 1 : 
+int n = 36;   // 00100100
+int i = 3;   // 
+int maskON = 1 << i
+System.out.println(n | maskON); // 44 (00101100)
+
+// or,
+// n = n | (1 << i);
+// System.out.println(n); // 44 (00101100)
+
+Ex 2 : Real-Time Use Case (Permissions)
+int READ  = 1 << 0; // 0001
+int WRITE = 1 << 1; // 0010
+
+int userPerm = 0;
+
+// switch ON WRITE permission
+userPerm = userPerm | WRITE;
+
+Q 2: How to Switch OFF the iᵗʰ Bit (Bit Masking) ?
+--> 👉 To switch OFF a bit, we use Bitwise AND (&) with NOT (~)
+--> Formula : n = n & ~(1 << i);
+
+Q: How This Works (Logic)
+1. (1 << i) : creates a mask with only the iᵗʰ bit ON
+
+2. ~(1 << i) : flips the mask → iᵗʰ bit becomes OFF, others ON
+
+3. n & mask : 
+  → AND with 0 turns OFF that bit
+  → AND with 1 keeps other bits unchanged
+
+Example : Switch OFF the 3ʳᵈ bit of: n = |0|0|1|0|1|1|0|0|
+                                           7 6 5 4 3 2 1 0
+Step 1: Create Mask : 
+ 1 << 3  →  |0|0|0|0|1|0|0|0|
+
+Step 2: Invert Mask :
+ ~(1 << 3) → |1|1|1|1|0|1|1|1|
+
+Step 3: AND Operation : 
+      |0|0|1|0|1|1|0|0|
+AND(&)|1|1|1|1|0|1|1|1|
+      ------------------
+      |0|0|1|0|0|1|0|0|
+--> Observation : Only the 3ʳᵈ bit is switched OFF, all other bits remain unchanged
+
+Ex: 
+int n = 44;   // 00101100
+int i = 3;
+
+int maskOFF = 1 << i;
+int flips = ~(1 << i);
+System.out.println(n & flips); // 36
+
+//Or using formula
+//n = n & ~(1 << i);
+//System.out.println(n); // 36 (00100100)
+
+Ex 2 : Real-Time Use Case (Permissions)
+int READ  = 1 << 0; // 0001
+int WRITE = 1 << 1; // 0010
+
+int userPerm = READ | WRITE; // both ON
+
+// switch OFF WRITE permission
+userPerm = userPerm & ~WRITE;
+
+Q 3 : How to Toggle the iᵗʰ Bit (Bit Masking) ?
+Q: What does TOGGLE mean : 👉 Toggle = flip the bit
+0 → 1  (OFF → ON)
+1 → 0  (ON → OFF)
+
+🔹 Operator Used : Bitwise XOR (^)
+Why XOR?
+| Bit | XOR 0         | XOR 1    |
+| --- | ------------- | -------- |
+| 0   | 0 (no change) | 1 (flip) |
+| 1   | 1 (no change) | 0 (flip) |
+--> 👉 XOR with 1 toggles the bit
+Formula : n = n ^ (1 << i);
+
+Q: How This Works (Logic) ?
+  1. (1 << i) → creates a mask with only the iᵗʰ bit ON
+  2. XOR (^) with:
+       (a). 1 → flips the bit
+       (b). 0 → keeps the bit unchanged
+Ex : 
+Toggle the 3ʳᵈ bit of:n = |0|0|1|0|1|1|0|0|   (44)
+                            7 6 5 4 3 2 1 0
+Step 1: Create Mask
+  1 << 3 → |0|0|0|0|1|0|0|0|
+
+Step 2: XOR Operation
+      |0|0|1|0|1|1|0|0|
+XOR(^)|0|0|0|0|1|0|0|0|
+      ------------------
+      |0|0|1|0|0|1|0|0|
+
+Observation : The 3ʳᵈ bit changes from 1 → 0, all other bits remain unchanged
+
+Java Ex: 
+int n = 44;   // 00101100
+int i = 3;
+
+int maskToggle = 1 << i;
+System.out.println(n ^ maskToggle); // 36
+
+// or using formula
+// n = n ^ (1 << i);
+// System.out.println(n); // 36 (00100100)
+
+Toggle Again (Proof) : 
+n = n ^ (1 << i);
+System.out.println(n); // 44
+
+Ex: Real-Time Use Case : 
+int DARK_MODE = 1 << 2;
+settings ^= DARK_MODE;
+
+Q 3 : How to check the iᵗʰ Bit (Bit Masking) ?
+Q: What does CHECK mean? 
+-->  We want to know whether the iᵗʰ bit is 1 (ON) or 0 (OFF) .
+-->  We do NOT change the number .
+
+🔹 Operator Used : Bitwise AND (&)
+Why AND?
+  1. AND with 1 → keeps bit value
+  2. AND with 0 → result becomes 0
+
+📌 Formula : (n & (1 << i)) != 0
+
+🧠 How This Works (Logic)?
+   1. (1 << i) creates a mask
+     --> only the iᵗʰ bit is ON
+
+   2. AND (&) operation:
+     --> If iᵗʰ bit in n is 1 → result ≠ 0
+     --> If iᵗʰ bit in n is 0 → result = 0
+Ex :
+Check the 3ʳᵈ bit of:n = |0|0|1|0|1|1|0|0|   (44)
+                           7 6 5 4 3 2 1 0
+Step 1: Create Mask
+1 << 3 → |0|0|0|0|1|0|0|0|
+
+Step 2: AND Operation
+      |0|0|1|0|1|1|0|0|
+AND(&)|0|0|0|0|1|0|0|0|
+      ------------------
+      |0|0|0|0|1|0|0|0|
+--> Observation : Result is non-zero → 3ʳᵈ bit is ON
+
+❌ If Bit Was OFF
+n = |0|0|1|0|0|1|0|0|
+AND(&)|0|0|0|0|1|0|0|0|
+---------------------
+      |0|0|0|0|0|0|0|0|
+📌 Result = 0 → bit is OFF
+
+Java Ex 1: 
+int n = 44;   // 00101100
+int i = 3;
+boolean isON = (n & (1 << i)) != 0;
+System.out.println(isON); // true
+
+java Ex 2 : 
+int n = 44;   // 00101100
+int i = 3;
+
+int checkMass = 1 << i ;
+
+if((n & checkMass) == 0) {
+System.out.println("isOFF");
+}else{
+System.out.println("isON");
+}
+// or
+// boolean isOFF = (n & (1 << i)) == 0;
+// System.out.println(isOFF); // false
+
+Ex 3 : Real-Time Use Case (Permissions)
+int READ  = 1 << 0;
+int WRITE = 1 << 1;
+
+int userPerm = READ | WRITE;
+// check WRITE permission
+if ((userPerm & WRITE) != 0) {
+    System.out.println("Write allowed");
+}
+
+🧠 Final Memory Rule : 
+| Operation | Condition |
+| --------- | --------- |
+| Bit ON    | `!= 0`    |
+| Bit OFF   | `== 0`    |
 
 
