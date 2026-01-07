@@ -709,4 +709,472 @@ if ((userPerm & WRITE) != 0) {
 | Bit ON    | `!= 0`    |
 | Bit OFF   | `== 0`    |
 
+Q: Find the Position of Rightmost Set Bit (Without Built-ins) ?
+Ex 1 : 
+import java.util.Scanner;
+public class Bitwise {
+
+    // Returns 1-based position of Right Most Set Bit
+    static int positionOfRMSB(int n) {
+        if (n == 0) {
+            return -1; // no set bits
+        }
+
+        int pos = 1;
+        while ((n & 1) == 0) {
+            n >>= 1;
+            pos++;
+        }
+        return pos;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = scan.nextInt();
+
+        int pos = positionOfRMSB(n);
+        if (pos == -1) {
+            System.out.println("No set bits present");
+        } else {
+            System.out.println("Position of Rightmost Set Bit: " + pos);
+        }
+        scan.close();
+    }
+}
+
+Ex 2 : Q: Find the Position of Rightmost Set Bit (With Built-ins) ? 
+import java.util.Scanner;
+public class Bitwise {
+
+    // Returns 1-based position of Right Most Set Bit
+    static int positionOfRMSB(int n) {
+        if (n == 0) {
+            return -1; // no set bit
+        }
+        return Integer.numberOfTrailingZeros(n) + 1;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = scan.nextInt();
+
+        int pos = positionOfRMSB(n);
+        if (pos == -1) {
+            System.out.println("No set bits present");
+        } else {
+            System.out.println("Position of Rightmost Set Bit: " + pos);
+        }
+        scan.close();
+    }
+}
+
+Q: Count the number of set bit in a given number using Brian Kernighan’s Algorithm ?
+--> Idea : Each iteration removes the rightmost set bit.
+--> Formula : n = n & (n - 1);
+--> Example
+       n = 44 → 00101100
+--> Steps:
+      00101100  (44)
+      00101000  (n & (n-1))
+      00100000
+      00000000
+--> Set bits count = 3 ( three times removed 1 ) 
+java Ex: 
+import java.util.Scanner;
+public class Bitwise {
+    static int countSetBits(int n) {
+        int count = 0;
+        while (n != 0) {
+            n = n & (n - 1); // removes rightmost set bit
+            count++;
+        }
+        return count;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = scan.nextInt();
+
+        System.out.println("Number of set bits: " + countSetBits(n));
+        scan.close();
+    }
+}
+
+Q: Write a program to find whether a number is a power of 2 ? (Adobe Interview Question_PowerOf2) 
+--> A number is a power of 2 if it has exactly one set bit in its binary representation.
+--> Formula : n & (n - 1) // Brian Kernighan’s Algorithm
+--> Clears the rightmost set bit
+--> If the result becomes 0, the number had only one set bit
+
+java Ex: 
+import java.util.Scanner;
+public class Bitwise {
+    static boolean isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = scan.nextInt();
+
+        if (isPowerOfTwo(n)) {
+            System.out.println(n + " is a power of 2");
+        } else {
+            System.out.println(n + " is NOT a power of 2");
+        }
+        scan.close();
+    }
+}
+
+🔹 Find the Lonely(unique) Integer (vvi)
+Q: Given an array where every element appears twice except one, find the element that appears only once.
+🧠 Key Idea : XOR Properties
+               a ^ a = 0
+               a ^ 0 = a
+👉 When we XOR all elements:
+               1. Pairs cancel out
+               2. The unique (lonely) number remains
+Most Efficient Approach (XOR) :  Time: O(n) and  Space: O(1)
+
+java Ex: 
+import java.util.Scanner;
+public class LonelyInteger {
+    static int findLonelyInteger(int[] arr) {
+        int result = 0;
+
+        for (int num : arr) {
+            result ^= num;  // XOR operation
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter number of elements: ");
+        int n = scan.nextInt();
+        int[] arr = new int[n];
+
+        System.out.println("Enter elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+        System.out.println("Lonely Integer: " + findLonelyInteger(arr));
+        scan.close();
+    }
+}
+
+🔹 Lonely Integer when Others Appear 3 Times
+Q: Given an array where every element appears exactly 3 times except one element which appears only once, find that unique (lonely) number.
+Note: 
+--> Now XOR Alone Won’t Work Here 
+--> Q: ❌ Why XOR Alone Won’t Work Here?
+    Because:
+         a ^ a ^ a = a   ❌ (not 0)
+--> So duplicates do NOT cancel out when they appear 3 times.
+
+🧠 Efficient Concept (Interview Explanation)
+--> Count bits at each position (0–31)
+--> If a bit count is not divisible by 3, that bit belongs to the lonely number
+--> 👉 This works because:
+          1. Triplets contribute multiples of 3
+          2. Lonely number contributes extra bits
+✅ Optimal Approach (Bit Counting)
+⏱  Time: O(32 × n) → O(n)
+🧠 Space: O(1)
+
+java Ex : 
+import java.util.Scanner;
+public class LonelyIntegerThrice {
+
+    static int findLonelyInteger(int[] arr) {
+        int result = 0;
+
+        // Check each bit position
+        for (int bit = 0; bit < 32; bit++) {
+            int count = 0;
+
+            for (int num : arr) {
+                if ((num & (1 << bit)) != 0) {
+                    count++;
+                }
+            }
+            // If count is not multiple of 3, set that bit
+            if (count % 3 != 0) {
+                result |= (1 << bit);
+            }
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter number of elements: ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+        System.out.println("Enter elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+        System.out.println("Lonely Integer: " + findLonelyInteger(arr));
+        scan.close();
+    }
+}
+Input : 
+7
+2 2 3 2 4 4 4
+
+Explanation :
+2 → appears 3 times
+4 → appears 3 times
+3 → appears once ✅
+
+Output : 
+Lonely Integer: 3
+Q: Can this handle negative numbers?
+--> ✔️ YES, because Java uses two’s complement and we check all 32 bits.
+
+🔹 Find the Two Lonely Integers : (All other numbers appear twice)
+Q: Given an array where exactly two numbers appear once and all other numbers appear twice, find the two unique numbers.
+
+🧠 Key Idea (Interview Explanation)
+1. XOR all numbers → duplicates cancel out
+   xor = a ^ b
+--> (a and b are the two lonely numbers)
+
+2. Find rightmost set bit in xor
+   rmsb = xor & (-xor)
+
+3. Divide numbers into two groups
+     (I).  Group 1 → bit set
+     (II). Group 2 → bit not set
+
+4. XOR each group separately → get a and b
+
+✅ Optimal Solution
+Time: O(n)
+Space: O(1)
+--> No extra data structures
+
+java Ex: 
+import java.util.Scanner;
+public class TwoLonelyIntegers {
+
+    static void findTwoLonely(int[] arr) {
+        int xor = 0;
+
+        // Step 1: XOR all elements
+        for (int num : arr) {
+            xor ^= num;
+        }
+
+        // Step 2: Find rightmost set bit
+        int rmsb = xor & (-xor);
+
+        int num1 = 0, num2 = 0;
+
+        // Step 3: Divide into two groups
+        for (int num : arr) {
+            if ((num & rmsb) != 0) {
+                num1 ^= num;
+            } else {
+                num2 ^= num;
+            }
+        }
+        System.out.println("Lonely numbers are: " + num1 + " and " + num2);
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter number of elements: ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+        findTwoLonely(arr);
+        scan.close();
+    }
+}
+Input
+6
+2 4 7 9 2 4
+
+XOR Flow
+xor = 7 ^ 9
+rmsb = 2
+
+Output
+Lonely numbers are: 7 and 9
+
+🔹 Find the Missing Number (Using XOR)
+Q: Given an array containing n distinct numbers taken from the range 0 to n, find the missing number.
+
+🧠 Key Idea :
+XOR Properties
+a ^ a = 0
+a ^ 0 = a
+
+👉 If we XOR:
+    1.All numbers from 0 to n
+    2.All numbers present in the array
+➡️ All duplicates cancel out, leaving the missing number.
+
+✅ Optimal Approach
+Time: O(n)
+Space: O(1)
+--> No extra memory
+
+java Ex: 
+import java.util.Scanner;
+public class MissingNumber {
+
+    static int findMissingNumber(int[] arr, int n) {
+        int xor = 0;
+
+        // XOR all numbers from 0 to n
+        for (int i = 0; i <= n; i++) {
+            xor ^= i;
+        }
+
+        // XOR all array elements
+        for (int num : arr) {
+            xor ^= num;
+        }
+        return xor;
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter n (range 0 to n): ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+
+        System.out.println("Missing Number: " + findMissingNumber(arr, n));
+        scan.close();
+    }
+}
+Input
+n = 5
+Array = 0 1 3 4 5
+
+XOR Flow
+(0^1^2^3^4^5) ^ (0^1^3^4^5)
+= 2
+
+Output
+Missing Number: 2
+
+🔹 Find the Missing AND Repeating Number
+Q: Given an array of size n containing numbers from 1 to n, one number is missing and one number is repeating.
+Find both numbers.
+
+🧠 Key Idea : 
+     1. XOR all array elements with numbers 1..n
+     2. Result = missing ^ repeating
+     3. Find rightmost set bit to separate them
+     4. XOR in two groups to get both numbers
+     5. Decide which is missing and which is repeating
+
+✅  Optimal Solution
+Time: O(n)
+Space: O(1)
+--> No extra memory
+
+java Ex : 
+import java.util.Scanner;
+public class MissingRepeating {
+
+    static void findMissingAndRepeating(int[] arr, int n) {
+        int xor = 0;
+
+        // Step 1: XOR array and numbers 1..n
+        for (int i = 0; i < n; i++) {
+            xor ^= arr[i];
+            xor ^= (i + 1);
+        }
+
+        // Step 2: Rightmost set bit
+        int rmsb = xor & (-xor);
+
+        int x = 0, y = 0;
+
+        // Step 3: Divide into two groups
+        for (int i = 0; i < n; i++) {
+            if ((arr[i] & rmsb) != 0)
+                x ^= arr[i];
+            else
+                y ^= arr[i];
+
+            if (((i + 1) & rmsb) != 0)
+                x ^= (i + 1);
+            else
+                y ^= (i + 1);
+        }
+
+        // Step 4: Identify which is missing/repeating
+        int repeating = 0, missing = 0;
+        for (int num : arr) {
+            if (num == x) {
+                repeating = x;
+                missing = y;
+                break;
+            } else if (num == y) {
+                repeating = y;
+                missing = x;
+                break;
+            }
+        }
+
+        System.out.println("Repeating Number: " + repeating);
+        System.out.println("Missing Number: " + missing);
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter n: ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+
+        findMissingAndRepeating(arr, n);
+        scan.close();
+    }
+}
+Input
+n = 5
+Array = 1 2 2 4 5
+
+Output
+Repeating Number: 2
+Missing Number: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
