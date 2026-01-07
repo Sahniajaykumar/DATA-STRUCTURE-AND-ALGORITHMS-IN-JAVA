@@ -1164,7 +1164,231 @@ Output
 Repeating Number: 2
 Missing Number: 3
 
+Q 1: Write a program to Swap Two Numbers Using XOR ?
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
+        System.out.print("Enter first number: ");
+        int a = sc.nextInt();
+
+        System.out.print("Enter second number: ");
+        int b = sc.nextInt();
+
+        // XOR swap
+        a = a ^ b;
+        b = a ^ b;
+        a = a ^ b;
+
+        System.out.println("After Swapping:");
+        System.out.println("First number: " + a);
+        System.out.println("Second number: " + b);
+    }
+}
+Enter first number: 10
+Enter second number: 20
+After Swapping:
+First number: 20
+Second number: 10
+
+Q 2: Swap Two Numbers Using Array + XOR
+import java.util.Scanner;
+public class SwapUsingArray {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Create array of size 2
+        int[] arr = new int[2];
+
+        System.out.print("Enter first number: ");
+        arr[0] = sc.nextInt();
+
+        System.out.print("Enter second number: ");
+        arr[1] = sc.nextInt();
+
+        // XOR Swap
+        arr[0] = arr[0] ^ arr[1];
+        arr[1] = arr[0] ^ arr[1];
+        arr[0] = arr[0] ^ arr[1];
+
+        System.out.println("After Swapping:");
+        System.out.println("First number: " + arr[0]);
+        System.out.println("Second number: " + arr[1]);
+        sc.close();
+    }
+}
+--> We store both numbers in an array → arr[0] and arr[1].
+--> We use XOR swap to exchange their values without a temporary variable.
+Enter first number: 15
+Enter second number: 25
+After Swapping:
+First number: 25
+Second number: 15
+
+Q 3 : Swap Any Two Indices in Array (XOR + Method + Scanner)
+import java.util.Scanner;
+public class SwapAnyIndices {
+
+    // Method to swap elements at indices i and j using XOR
+    static void swap(int[] arr, int i, int j) {
+        if (i == j) return; // swapping same index does nothing
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter size of array: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter array elements:");
+        for (int k = 0; k < n; k++) {
+            arr[k] = sc.nextInt();
+        }
+
+        System.out.print("Enter first index to swap (0-based): ");
+        int i = sc.nextInt();
+
+        System.out.print("Enter second index to swap (0-based): ");
+        int j = sc.nextInt();
+
+        // Swap using method
+        swap(arr, i, j);
+
+        System.out.println("Array after swapping:");
+        for (int x : arr) {
+            System.out.print(x + " ");
+        }
+        sc.close();
+    }
+}
+Enter size of array: 5
+Enter array elements:
+10 20 30 40 50
+Enter first index to swap (0-based): 1
+Enter second index to swap (0-based): 3
+Array after swapping:
+10 40 30 20 50
+
+Q 4 : Swap Any Two Indices Using Temp Variable
+import java.util.Scanner;
+public class SwapUsingTemp {
+
+    // Method to swap two elements using a temporary variable
+    static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();          // size of array
+        int[] arr = new int[n];
+
+        for (int k = 0; k < n; k++)
+            arr[k] = sc.nextInt();     // array elements
+
+        int i = sc.nextInt();          // first index to swap
+        int j = sc.nextInt();          // second index to swap
+
+        swap(arr, i, j);
+
+        for (int x : arr)
+            System.out.print(x + " "); // output array
+        sc.close();
+    }
+}
+Input:
+5
+10 20 30 40 50
+1 3
+
+Output:
+10 40 30 20 50
+
+Q 5 : Swap Two number Using Temp Variable
+import java.util.Scanner;
+public class SwapUsingMethod {
+
+    // Method to swap first two elements using a temporary variable
+    static void swapFirstTwo(int[] arr) {
+        int temp = arr[0];
+        arr[0] = arr[1];
+        arr[1] = temp;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int[] arr = new int[2];
+
+        System.out.print("Enter first number: ");
+        arr[0] = sc.nextInt();
+
+        System.out.print("Enter second number: ");
+        arr[1] = sc.nextInt();
+
+        System.out.println("Before Swapping:");
+        System.out.println("First number: " + arr[0]);
+        System.out.println("Second number: " + arr[1]);
+
+        // Call the swap method
+        swapFirstTwo(arr);
+
+        System.out.println("After Swapping:");
+        System.out.println("First number: " + arr[0]);
+        System.out.println("Second number: " + arr[1]);
+
+        sc.close();
+    }
+}
+
+🧠 Following Major Problem Categories using bitwise operatore (Interview View)
+==============================================================================
+1️⃣ Bit Basics (10–15 problems)
+1.Check odd / even
+2.Set, clear, toggle, check iᵗʰ bit
+3.Rightmost / leftmost set bit
+4.Power of 2 / 4
+5.Count trailing zeros
+
+2️⃣ XOR-Based Problems (15–20 problems)
+1.Lonely integer (once)
+2.Lonely integer (twice)
+3.Missing number
+4.Missing + repeating
+5.Swap numbers without temp
+6.Find duplicate
+7.XOR of range
+
+3️⃣ Counting Bits (10–15 problems)
+1.Count set bits
+2.Brian Kernighan’s algorithm
+3.Count bits from 1 to N
+4.Parity of number
+
+4️⃣ Subsets & Masks (10–15 problems)
+1.Generate all subsets
+2.Permission systems
+3.Feature flags
+4.Power set problems
+
+5️⃣ Math + Bit Tricks (10–15 problems)
+1.Multiply/divide by 2
+2.Fast exponentiation
+3.Modulo using bitwise
+4.Gray code
+
+6️⃣ Advanced / Competitive (15–25 problems)
+1.Single number II / III
+2.Bit DP
+3.Trie + XOR max
+4.AND / OR subarray problems
 
 
 
