@@ -1,0 +1,551 @@
+1️⃣ What is Recursion? 
+--> Recursion is a technique where a function calls itself to solve a problem by breaking it into smaller subproblems.
+--> 👉 Every recursive solution has two mandatory parts:
+    1. Base Case – stops recursion (termination condition)
+    2. Recursive Case – function calls itself with a smaller input
+--> ❗ Without a base case → StackOverflowError
+Ex: 
+public class Recursion {
+  public static void recursion(int n) {
+        // Base case
+        if (n == 0) {
+            return;
+        }
+        System.out.println(n); // output : 3,2,1
+
+        // Recursive call
+        recursion(n - 1);
+        // System.out.println(n); // output : 1,2,3
+    }
+    public static void main(String[] args) {
+        recursion(3);
+    }
+}
+Interview Tip:
+--> Printing before recursive call → descending
+--> Printing after recursive call → ascending
+
+#. Step-by-Step Execution (Call Stack)
+Call Flow:
+recursion(3)
+ print 3
+ recursion(2)
+
+recursion(2)
+ print 2
+ recursion(1)
+
+recursion(1)
+ print 1
+ recursion(0)
+
+recursion(0)
+ return
+
+2️⃣ Why Recursion is Important in Data Structures?
+--> Recursion is natural fit for many data structures because they are self-similar:
+| Data Structure   | Why Recursion Fits             |
+| ---------------- | ------------------------------ |
+| Tree             | Each node has subtrees         |
+| Graph (DFS)      | Explore neighbors recursively  |
+| Linked List      | Each node points to next node  |
+| Divide & Conquer | Problem split into subproblems |
+
+1st Approach :  Simple Recursive Example (Java)
+Topic : Factorial Example : Formula = n! = n * (n-1)!
+----------------------------------------------------
+public class Factorial {
+
+    public static int factorial(int n) {
+        // Base case
+        if (n == 0 || n == 1) {   // since 0! = 1 and 1! = 1
+            return 1;
+        }
+
+        // Recursive case (n-1) 
+        return n * factorial(n - 1);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(factorial(5)); // 120
+    }
+}
+📌 How it works (Call Stack)
+factorial(5)
+→ 5 * factorial(4)
+→ 5 * 4 * factorial(3)
+→ 5 * 4 * 3 * factorial(2)
+→ 5 * 4 * 3 * 2 * factorial(1)
+→ return 1
+
+2nd Approach:  Iterative Approach Example (Same Problem)
+🔹 Factorial Example : Using Loop
+public static int factorialIterative(int n) {
+    int result = 1;
+
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+Q: Difference Between Recursive and Iterative Approach (Very Important)
+| Feature             | Recursion                     | Iteration    |
+| ------------------- | ----------------------------- | ------------ |
+| Function calls      | Calls itself                  | Uses loops   |
+| Memory usage        | More (call stack)             | Less         |
+| Code readability    | Cleaner, elegant              | More control |
+| Performance         | Slightly slower               | Faster       |
+| Stack overflow risk | Yes                           | No           |
+| Suitable for        | Tree, Graph, Divide & Conquer | Simple loops |
+
+#. Time & Space Complexity Comparison
+Example: Factorial
+| Approach  | Time | Space             |
+| --------- | ---- | ----------------- |
+| Recursive | O(n) | O(n) (call stack) |
+| Iterative | O(n) | O(1)              |
+
+ #. When to Use Recursion? (Interview Answer)
+
+✅ Use Recursion when:
+   1. Problem is self-similar
+   2. Tree traversal
+   3. DFS in graph
+   4. Divide & Conquer (Merge Sort, Quick Sort)
+   5. Backtracking (N-Queen, Maze)
+   6. Dynamic Programming
+
+❌ Avoid recursion when:
+   1. Large depth → stack overflow
+   2. Performance is critical
+   3. Simple looping logic
+
+#. When to Use Iteration?
+✅ Use Iteration when:
+   1. Simple repetition
+   2. Performance matters
+   3. Memory usage must be minimal
+   4. Large input size
+
+Q: How to Assume Recursion is possible for any given problem?
+--> By Assuming these three step : 
+  1. can it be broken down into smaller problem
+  2. Are the results dependent to eachother .
+  3. Does it have a base condition ?
+
+Topic :  What is Fibonacci Series? 
+----------------------------------
+--> The Fibonacci series is a sequence of numbers where each number is the sum of the previous two numbers.
+--> Mathematical definition:
+    F(0) = 0
+    F(1) = 1
+    F(n) = F(n−1) + F(n−2), for n ≥ 2
+Example:
+0, 1, 1, 2, 3, 5, 8, 13, 21 ...
+
+ java Ex: Fibonacci Using Recursion (Basic Concept)
+ public class Fibonacci {
+
+    public static int fib(int n) {
+        // Base cases
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+
+        // Recursive call
+        return fib(n - 1) + fib(n - 2);
+    }
+
+    public static void main(String[] args) {
+        int n = 7;
+        System.out.println("Fibonacci of " + n + " = " + fib(n));
+    }
+}
+Output : Fibonacci of 7 = 13
+
+4️⃣ Dry Run (Very Important for Interview)
+To calculate fib(5):
+fib(5)
+ = fib(4) + fib(3)
+ = (fib(3) + fib(2)) + (fib(2) + fib(1))
+ = ...
+--> Problem: Same values (fib(2), fib(3)) are calculated multiple times → inefficient
+5️⃣ Time & Space Complexity (Recursive)
+| Type  | Complexity        |
+| ----- | ----------------- |
+| Time  | ❌ O(2ⁿ)           |
+| Space | O(n) (call stack) |
+--> “Recursive Fibonacci has exponential time complexity due to overlapping subproblems.”
+
+2nd Approach : Fibonacci Using Iteration (Optimized)
+Java Ex:
+public class FibonacciIterative {
+
+    public static void printFibonacci(int n) {
+        int a = 0, b = 1;
+
+        for (int i = 0; i < n; i++) {
+            System.out.print(a + " ");
+            int c = a + b;
+            a = b;
+            b = c;
+        }
+    }
+    public static void main(String[] args) {
+        printFibonacci(10);
+    }
+}
+Output : 0 1 1 2 3 5 8 13 21 34
+
+Complexity : 
+| Type  | Complexity |
+| ----- | ---------- |
+| Time  | ✅ O(n)     |
+| Space | ✅ O(1)     |
+
+Topic 3 : First N natural numbers( Natural numbers = 1, 2, 3, ... N ) ?
+-------------------------------------------------------------------------
+1️⃣ Using Recursion (Conceptual Clarity)
+java Ex: 
+public class NaturalNumbersRecursion {
+
+    public static void printNumbers(int n) {
+        // Base case
+        if (n == 0) {
+            return;
+        }
+
+        // Recursive call
+        printNumbers(n - 1);
+
+        // Print after recursion
+        System.out.print(n + " ");
+    }
+
+    public static void main(String[] args) {
+        printNumbers(5);
+    }
+}
+Output
+1 2 3 4 5
+
+2️⃣ Using Iteration (Most Preferred in Interviews)
+java Ex : 
+public class NaturalNumbers {
+
+    public static void printNaturalNumbers(int n) {
+        for (int i = 1; i <= n; i++) {
+            System.out.print(i + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        printNaturalNumbers(5);
+    }
+}
+
+Count the number of digits 
+-----------------------------
+--> In base-10 (decimal), the digits are : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+Examples:
+| Number | Digits        | Count |
+| ------ | ------------- | ----- |
+| 7      | 7             | 1     |
+| 45     | 4, 5          | 2     |
+| 12345  | 1, 2, 3, 4, 5 | 5     |
+| 0      | 0             | 1     |
+ 
+--> Important: 👉 0 is also a digit and has one digit.
+
+java Ex : Recursive Approach : 
+public static int countDigits(int n) {
+
+    // Handle negative numbers
+    if (n < 0) {
+        n = -n;
+    }
+
+    // Base case
+    if (n < 10) {
+        return 1;
+    }
+
+    return countDigits(n / 10) + 1;
+}
+
+public static void main(String[] args) {
+    System.out.println(countDigits(12345)); // 5
+}
+
+✅ Iterative Approach : 
+public class CountDigitsIterative {
+
+    public static int countDigits(int n) {
+
+        // Handle negative numbers
+        if (n < 0) {
+            n = -n;
+        }
+
+        // Special case: 0 has one digit
+        if (n == 0) {
+            return 1;
+        }
+
+        int count = 0;
+
+        while (n > 0) {
+            count++;
+            n = n / 10;   // remove last digit
+        }
+        return count;
+    }
+    public static void main(String[] args) {
+        System.out.println(countDigits(12345)); // 5
+    }
+}
+
+sum of all digits of a number 
+------------------------------
+
+1️⃣ Recursive Approach (Conceptual)
+java Ex : 
+public class SumOfDigitsRecursion {
+    public static int sumOfDigits(int n) {
+
+        // Handle negative numbers
+        if (n < 0) {
+            n = -n;
+        }
+
+        // Base case
+        if (n == 0) {
+            return 0;
+        }
+
+        return (n % 10) + sumOfDigits(n / 10);
+    }
+    public static void main(String[] args) {
+        System.out.println(sumOfDigits(12345)); // 15
+    }
+}
+
+2️⃣ Iterative Approach (Most Preferred)
+java Ex : 
+public class SumOfDigits {
+    public static int sumOfDigits(int n) {
+
+        // Handle negative numbers
+        if (n < 0) {
+            n = -n;
+        }
+
+        int sum = 0;
+
+        while (n > 0) {
+            int digit = n % 10; // extract last digit
+            sum = sum + digit;
+            n = n / 10;        // remove last digit
+        }
+
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(sumOfDigits(12345)); // 15
+    }
+}
+
+🔍 Dry Run for 12345
+digit = 5 → sum = 5
+digit = 4 → sum = 9
+digit = 3 → sum = 12
+digit = 2 → sum = 14
+digit = 1 → sum = 15
+
+Reverse String 
+---------------------
+public class ReverseString {
+
+public static String reverseString( String s , String empty , int i) {
+if(i<0) return empty;
+
+return reverseString( s , empty + s.charAt(i) , i-1) ; 
+
+}
+public static void main (String[] args){
+Scanner scan = new Scanner(System.in);
+String s = scan.next();
+System.out.println(reverseString(s, "" , s.length()-1);
+}
+
+}
+
+✅ Iterative Version
+public class ReverseString {
+    public static String reverseString(String s) {
+
+        String result = "";
+        int i = s.length() - 1;
+
+        while (i >= 0) {
+            result = result + s.charAt(i);
+            i--;
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String s = scan.next();
+        System.out.println(reverseString(s));
+    }
+}
+
+🔁 Check Palindrome String :
+----------------------------
+-->  A palindrome is a string that reads the same forward and backward.
+Examples
+madam   → palindrome
+level   → palindrome
+hello   → not palindrome
+
+✅ 1️⃣ Iterative Approach (Most Preferred in Interviews)
+Java Code (Two-Pointer Technique) : 
+public class PalindromeIterative {
+    public static boolean isPalindrome(String s) {
+
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String s = scan.next();   // use nextLine() if spaces allowed
+
+        if (isPalindrome(s)) {
+            System.out.println("Palindrome");
+        } else {
+            System.out.println("Not a Palindrome");
+        }
+    }
+}
+
+✅ 2️⃣ Recursive Approach : 
+public class PalindromeRecursive {
+    public static boolean isPalindrome(String s, int left, int right) {
+
+        // Base case
+        if (left >= right) {
+            return true;
+        }
+
+        if (s.charAt(left) != s.charAt(right)) {
+            return false;
+        }
+        return isPalindrome(s, left + 1, right - 1);
+    }
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String s = scan.next();  // use nextLine() for spaces
+
+        if (isPalindrome(s, 0, s.length() - 1)) {
+            System.out.println("Palindrome");
+        } else {
+            System.out.println("Not a Palindrome");
+        }
+    }
+}
+🔍 Sample Input / Output
+Enter a string: madam
+Palindrome
+
+Enter a string: hello
+Not a Palindrome
+
+Sum of Elements in an Array
+------------------------------
+✅ 1️⃣ Iterative Approach (Most Preferred)
+public class ArraySumIterative {
+    public static int sumArray(int[] arr) {
+
+        int sum = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+        return sum;
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter array size: ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+        System.out.println("Sum = " + sumArray(arr));
+    }
+}
+How It Works
+ 1.Initialize sum = 0
+ 2.Traverse array using loop
+ 3.Add each element to sum
+
+✅ 2️⃣ Recursive Approach (Conceptual)
+public class ArraySumRecursive {
+    public static int sumArray(int[] arr, int index) {
+
+        // Base case
+        if (index == arr.length) {
+            return 0;
+        }
+        return arr[index] + sumArray(arr, index + 1);
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter array size: ");
+        int n = scan.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scan.nextInt();
+        }
+        System.out.println("Sum = " + sumArray(arr, 0));
+    }
+}
+🔍 Recursive Flow (Example)
+Array = [1, 2, 3]
+sum(0) = 1 + sum(1)
+sum(1) = 2 + sum(2)
+sum(2) = 3 + sum(3)
+sum(3) = 0
+Result = 6
+
+
+
+
+
+
+
+
+
+
+
+
