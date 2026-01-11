@@ -538,10 +538,90 @@ sum(2) = 3 + sum(3)
 sum(3) = 0
 Result = 6
 
+Josephus Problem : Josephus problem is based on a circular structure.
+--------------------
+🔹 Problem Statement
+  1. n people stand in a circle
+  2. Every k-th person is eliminated(killed)
+  3. Elimination continues until one person survives
+  4. Find the position of the survivor
 
+🔢 Example
+n = 7, k = 3 (elimination happen at every 3rd position)
+People :    1 2 3 4 5 6 7   -> Goal : We want to know who survives when every k-th person is removed from a circle.
+            0 1 2 3 4 5 6
+jos(7,3) = |A|B|C|D|E|F|G|  -> C ELIMINATED AT 3 which is 3rd people
+            0 1 2 3 4 5 
+JOS(6,3) = |D|E|F|G|A|B|    -> F ELIMINATED AT 3 which is 6th people
+            0 1 2 3 4 
+JOS(5,3) = |G|A|B|D|E|      -> B ELIMINATED AT 3 which is 2nd people
+            0 1 2 3 
+JOS(4,3) = |D|E|G|A|        -> G ELIMINATED AT 3 which is 7th people
+            0 1 2 
+JOS(3,3) = |A|D|E|          -> E ELIMINATED AT 3 which is 5th people
+            0 1
+JOS(2,3) = |A|D|            -> A ELIMINATED AT 3 which is 1st people
+            0
+JOS(1,3) = |D|              -> (Only one person → survivor index = 0)
 
+Elimination order: 3 → 6 → 2 → 7 → 5 → 1
+✅ Survivor = 4 (now this one people survive at 0 index)
 
+🔁 Recursive Formula
 
+Using 0-based indexing: J(n, k) = (J(n-1, k) + k) % n
+
+Base case: J(1, k) = 0  // (Only one person → survivor index = 0)
+
+Final answer (1-based index): J(n, k) + 1
+
+✅ Recursive Java Solution
+public class JosephusRecursive {
+    public static int josephus(int n, int k) {
+
+        // Base case
+        if (n == 1) { // once people become one apply base condition
+            return 0;
+        }
+        return (josephus(n - 1, k) + k) % n;  // "/ return quotient, % return remainder."
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter number of people: ");
+        int n = scan.nextInt(); // peoples
+
+        System.out.print("Enter step count: ");
+        int k = scan.nextInt(); // killing factor
+
+        int survivor = josephus(n, k) + 1; // convert to 1-based index
+        System.out.println("Survivor position: " + survivor);
+    }
+}
+
+🔁 Iterative Java Solution (Preferred)
+public class JosephusIterative {
+    public static int josephus(int n, int k) {
+
+        int result = 0;
+
+        for (int i = 2; i <= n; i++) {
+            result = (result + k) % i;
+        }
+        return result + 1; // convert to 1-based
+    }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Enter number of people: ");
+        int n = scan.nextInt();
+
+        System.out.print("Enter step count: ");
+        int k = scan.nextInt();
+
+        System.out.println("Survivor position: " + josephus(n, k));
+    }
+}
 
 
 
